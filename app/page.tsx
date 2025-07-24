@@ -8,7 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/ui/tabs"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "./components/ui/select"
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "./components/ui/dialog"
 import { Textarea } from "./components/ui/textarea"
-import { Play, Pause, SkipForward } from "lucide-react"
+import { Play, Pause, SkipForward, SkipBack, Shuffle, Repeat } from "lucide-react";
 
 interface Track {
   id: string
@@ -276,7 +276,7 @@ export default function MusicPlayer() {
   return (
 
 
-    <div className="min-h-screen bg-background text-foreground">
+<div className="min-h-screen bg-background text-foreground">
   <div className="container mx-auto p-4 max-w-6xl">
     {/* Header */}
     <div className="flex items-center justify-between mb-6">
@@ -291,11 +291,11 @@ export default function MusicPlayer() {
           className="hidden"
         />
         <button
-          className="border rounded-2xl px-3 py-1 hover:bg-accent transition-all"
-          onClick={() => fileInputRef.current && fileInputRef.current.click()}
-        >
-          Upload
-        </button>
+  className="px-8 py-3 bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-800 font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-200/80 border-t-white/90 border-l-white/90 hover:scale-105 active:scale-95"
+  onClick={() => fileInputRef.current && fileInputRef.current.click()}
+>
+  Upload
+</button>
       </div>
     </div>
 
@@ -476,7 +476,7 @@ export default function MusicPlayer() {
       </div>
 
       {/* Player Sidebar */}
-      <div className="space-y-6">
+      {/* <div className="space-y-6">
         <div className="space-y-4 border rounded-2xl p-4">
           {currentTrack ? (
             <>
@@ -562,7 +562,122 @@ export default function MusicPlayer() {
             </div>
           </div>
         )}
+      </div> */}
+
+<div className="space-y-6">
+  <div className="space-y-4 p-4 rounded-xl bg-zinc-900 border border-zinc-700 shadow-xl">
+    {currentTrack ? (
+      <>
+        <div className="text-center">
+          <div className="w-32 h-32 mx-auto bg-gradient-to-br from-primary/30 to-primary/50 rounded-xl flex items-center justify-center mb-4 shadow-inner">
+            <Play className="h-16 w-16 text-primary" />
+          </div>
+          <h3 className="font-semibold text-lg text-white">{currentTrack.title}</h3>
+          <p className="text-sm text-zinc-300">{currentTrack.artist}</p>
+          <span className="text-sm text-zinc-400">{currentTrack.genre}</span>
+        </div>
+
+        <div className="space-y-2">
+          <Slider
+            value={[currentTime]}
+            max={duration || 100}
+            step={1}
+            onValueChange={handleSeek}
+            className="w-full [&>*]:h-2 [&>*]:bg-zinc-700 [&>div]:bg-primary"
+          />
+          <div className="flex justify-between text-xs text-zinc-400">
+            <span>{formatTime(currentTime)}</span>
+            <span>{formatTime(duration)}</span>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-center gap-3">
+  <button
+    onClick={() => setIsShuffled(!isShuffled)}
+    className={`p-2 rounded-xl transition-all duration-200 border border-zinc-700 shadow ${
+      isShuffled
+        ? "bg-primary text-white hover:scale-105 active:scale-95"
+        : "bg-zinc-800 text-white hover:bg-zinc-700 hover:scale-105 active:scale-95"
+    }`}
+  >
+    <Shuffle className="h-5 w-5" />
+  </button>
+
+  <button
+    onClick={handlePrevious}
+    className="p-2 rounded-xl bg-zinc-800 text-white border border-zinc-700 shadow hover:bg-zinc-700 hover:scale-105 active:scale-95 transition-all duration-200"
+  >
+    <SkipBack className="h-5 w-5" />
+  </button>
+
+  <button
+    onClick={handlePlayPause}
+    className="p-2 rounded-xl bg-zinc-800 text-white border border-zinc-700 shadow hover:bg-zinc-700 hover:scale-105 active:scale-95 transition-all duration-200"
+  >
+    {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+  </button>
+
+  <button
+    onClick={handleNext}
+    className="p-2 rounded-xl bg-zinc-800 text-white border border-zinc-700 shadow hover:bg-zinc-700 hover:scale-105 active:scale-95 transition-all duration-200"
+  >
+    <SkipForward className="h-5 w-5" />
+  </button>
+
+  <button
+    onClick={() => setIsRepeating(!isRepeating)}
+    className={`p-2 rounded-xl transition-all duration-200 border border-zinc-700 shadow ${
+      isRepeating
+        ? "bg-primary text-white hover:scale-105 active:scale-95"
+        : "bg-zinc-800 text-white hover:bg-zinc-700 hover:scale-105 active:scale-95"
+    }`}
+  >
+    <Repeat className="h-5 w-5" />
+  </button>
+</div>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={toggleMute}
+            className="px-4 py-2 text-sm font-medium rounded-xl bg-zinc-800 text-white border border-zinc-700 shadow hover:bg-zinc-700 hover:scale-105 active:scale-95 transition-all duration-200"
+          >
+            {isMuted || volume === 0 ? "Mute" : "Unmute"}
+          </button>
+          <Slider
+            value={[isMuted ? 0 : volume]}
+            max={1}
+            step={0.1}
+            onValueChange={handleVolumeChange}
+            className="flex-1 [&>*]:h-2 [&>*]:bg-zinc-700 [&>div]:bg-primary"
+          />
+        </div>
+      </>
+    ) : (
+      <div className="text-center py-8 text-zinc-400">
+        <Play className="h-16 w-16 mx-auto mb-4 opacity-50" />
+        <p>No track selected</p>
+        <p className="text-sm">Choose a song to start playing</p>
       </div>
+    )}
+  </div>
+
+  {currentPlaylist && (
+    <div className="space-y-2 p-4 rounded-xl bg-zinc-900 border border-zinc-700 shadow-lg">
+      <h3 className="text-sm text-zinc-400">Playing from</h3>
+      <div>
+        <p className="font-medium text-white">{currentPlaylist.name}</p>
+        <p className="text-sm text-zinc-400">
+          {currentPlaylist.tracks.length} tracks
+        </p>
+      </div>
+    </div>
+  )}
+</div>
+
+
+
+
+
     </div>
   </div>
   <audio ref={audioRef} />
