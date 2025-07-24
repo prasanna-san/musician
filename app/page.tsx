@@ -276,13 +276,10 @@ export default function MusicPlayer() {
   return (
 
 
-
-
-
-<div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground">
   <div className="container mx-auto p-4 max-w-6xl">
     {/* Header */}
-    <div className="flex items-center justify-between mb-6 border-b pb-4">
+    <div className="flex items-center justify-between mb-6">
       <h1 className="text-3xl font-bold text-primary">Music Player</h1>
       <div className="flex items-center gap-2">
         <input
@@ -293,6 +290,12 @@ export default function MusicPlayer() {
           onChange={handleFileUpload}
           className="hidden"
         />
+        <button
+          className="border rounded-2xl px-3 py-1 hover:bg-accent transition-all"
+          onClick={() => fileInputRef.current && fileInputRef.current.click()}
+        >
+          Upload
+        </button>
       </div>
     </div>
 
@@ -306,14 +309,14 @@ export default function MusicPlayer() {
               placeholder="Search tracks..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-4 pr-2 py-2 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-primary"
+              className="pl-4 pr-2 py-2 border rounded-2xl w-full focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
           <Select value={genreFilter} onValueChange={setGenreFilter}>
-            <SelectTrigger className="w-full sm:w-48 border rounded-lg">
+            <SelectTrigger className="w-full sm:w-48 border rounded-2xl">
               <SelectValue placeholder="Filter by genre" />
             </SelectTrigger>
-            <SelectContent className="border rounded-md shadow-md">
+            <SelectContent className="border rounded-2xl shadow-md">
               <SelectItem value="all">All Genres</SelectItem>
               {genres.map((genre) => (
                 <SelectItem key={genre} value={genre}>
@@ -326,7 +329,7 @@ export default function MusicPlayer() {
 
         {/* Tabs for Library and Playlists */}
         <Tabs defaultValue="library" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 border rounded-lg overflow-hidden">
+          <TabsList className="grid w-full grid-cols-2 border rounded-2xl overflow-hidden">
             <TabsTrigger
               value="library"
               className="py-2 hover:bg-accent transition-all"
@@ -346,7 +349,7 @@ export default function MusicPlayer() {
               {filteredTracks.map((track) => (
                 <div
                   key={track.id}
-                  className={`flex items-center justify-between p-4 rounded-lg border hover:shadow-md transition-all cursor-pointer ${
+                  className={`flex items-center justify-between p-4 rounded-2xl border hover:shadow-md transition-all cursor-pointer ${
                     currentTrack?.id === track.id ? "bg-accent border-primary" : "bg-card"
                   }`}
                   onClick={() => playTrack(track)}
@@ -383,13 +386,13 @@ export default function MusicPlayer() {
           </TabsContent>
 
           <TabsContent value="playlists" className="space-y-4">
-            <div className="flex justify-between items-center border-b pb-2">
+            <div className="flex justify-between items-center">
               <h3 className="text-lg font-semibold">Your Playlists</h3>
               <Dialog open={showCreatePlaylist} onOpenChange={setShowCreatePlaylist}>
                 <DialogTrigger asChild>
-                  <button className="border rounded px-3 py-1 hover:bg-accent transition-all">Create Playlist</button>
+                  <button className="border rounded-2xl px-3 py-1 hover:bg-accent transition-all">Create Playlist</button>
                 </DialogTrigger>
-                <DialogContent className="rounded-xl shadow-xl">
+                <DialogContent className="rounded-2xl shadow-xl">
                   <DialogHeader>
                     <DialogTitle>Create New Playlist</DialogTitle>
                   </DialogHeader>
@@ -401,7 +404,7 @@ export default function MusicPlayer() {
                         value={newPlaylistName}
                         onChange={(e) => setNewPlaylistName(e.target.value)}
                         placeholder="Enter playlist name"
-                        className="border rounded p-2 w-full"
+                        className="border rounded-2xl p-2 w-full"
                       />
                     </div>
                     <div>
@@ -411,9 +414,10 @@ export default function MusicPlayer() {
                         value={newPlaylistDescription}
                         onChange={(e) => setNewPlaylistDescription(e.target.value)}
                         placeholder="Enter playlist description"
+                        className="rounded-2xl"
                       />
                     </div>
-                    <button onClick={createPlaylist} className="w-full border rounded px-3 py-1 hover:bg-accent">
+                    <button onClick={createPlaylist} className="w-full border rounded-2xl px-3 py-1 hover:bg-accent">
                       Create Playlist
                     </button>
                   </div>
@@ -423,7 +427,7 @@ export default function MusicPlayer() {
 
             <div className="grid gap-4">
               {playlists.map((playlist) => (
-                <div key={playlist.id} className="border rounded p-4 hover:shadow-md">
+                <div key={playlist.id} className="border rounded-2xl p-4 hover:shadow-md">
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="text-lg font-semibold">{playlist.name}</h3>
@@ -433,10 +437,10 @@ export default function MusicPlayer() {
                       <p className="text-sm text-muted-foreground mt-1">{playlist.tracks.length} tracks</p>
                     </div>
                     <div className="flex gap-2">
-                      <button className="border rounded px-2 py-1 hover:bg-accent" onClick={() => setCurrentPlaylist(playlist)}>
+                      <button className="border rounded-2xl px-2 py-1 hover:bg-accent" onClick={() => setCurrentPlaylist(playlist)}>
                         Play
                       </button>
-                      <button className="border rounded px-2 py-1 hover:bg-destructive/10" onClick={() => deletePlaylist(playlist.id)}>
+                      <button className="border rounded-2xl px-2 py-1 hover:bg-destructive/10" onClick={() => deletePlaylist(playlist.id)}>
                         Delete
                       </button>
                     </div>
@@ -447,9 +451,9 @@ export default function MusicPlayer() {
                       const track = tracks.find((t) => t.id === trackId);
                       if (!track) return null;
                       return (
-                        <div key={trackId} className="flex items-center justify-between p-2 rounded border">
+                        <div key={trackId} className="flex items-center justify-between p-2 rounded-2xl border">
                           <div className="flex items-center gap-2">
-                            <button className="border rounded px-2 py-1 hover:bg-accent" onClick={() => playTrack(track)}>
+                            <button className="border rounded-2xl px-2 py-1 hover:bg-accent" onClick={() => playTrack(track)}>
                               <Play className="h-3 w-3" />
                             </button>
                             <div>
@@ -457,7 +461,7 @@ export default function MusicPlayer() {
                               <p className="text-xs text-muted-foreground">{track.artist}</p>
                             </div>
                           </div>
-                          <button className="border rounded px-2 py-1 hover:bg-destructive/10" onClick={() => removeFromPlaylist(playlist.id, trackId)}>
+                          <button className="border rounded-2xl px-2 py-1 hover:bg-destructive/10" onClick={() => removeFromPlaylist(playlist.id, trackId)}>
                             Delete
                           </button>
                         </div>
@@ -473,12 +477,11 @@ export default function MusicPlayer() {
 
       {/* Player Sidebar */}
       <div className="space-y-6">
-        {/* Now Playing */}
-        <div className="space-y-4 border rounded p-4">
+        <div className="space-y-4 border rounded-2xl p-4">
           {currentTrack ? (
             <>
               <div className="text-center">
-                <div className="w-32 h-32 mx-auto bg-gradient-to-br from-primary/20 to-primary/40 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-32 h-32 mx-auto bg-gradient-to-br from-primary/20 to-primary/40 rounded-2xl flex items-center justify-center mb-4">
                   <Play className="h-16 w-16 text-primary" />
                 </div>
                 <h3 className="font-semibold text-lg">{currentTrack.title}</h3>
@@ -503,24 +506,24 @@ export default function MusicPlayer() {
               <div className="flex items-center justify-center gap-2">
                 <button
                   onClick={() => setIsShuffled(!isShuffled)}
-                  className={`border rounded px-2 py-1 ${
+                  className={`border rounded-2xl px-2 py-1 ${
                     isShuffled ? "bg-primary text-white" : "hover:bg-accent"
                   }`}
                 >
                   Shuffle
                 </button>
-                <button onClick={handlePrevious} className="border rounded px-2 py-1 hover:bg-accent">
+                <button onClick={handlePrevious} className="border rounded-2xl px-2 py-1 hover:bg-accent">
                   Prev
                 </button>
-                <button onClick={handlePlayPause} className="border rounded px-2 py-1 hover:bg-accent">
+                <button onClick={handlePlayPause} className="border rounded-2xl px-2 py-1 hover:bg-accent">
                   {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
                 </button>
-                <button onClick={handleNext} className="border rounded px-2 py-1 hover:bg-accent">
+                <button onClick={handleNext} className="border rounded-2xl px-2 py-1 hover:bg-accent">
                   <SkipForward className="h-4 w-4" />
                 </button>
                 <button
                   onClick={() => setIsRepeating(!isRepeating)}
-                  className={`border rounded px-2 py-1 ${
+                  className={`border rounded-2xl px-2 py-1 ${
                     isRepeating ? "bg-primary text-white" : "hover:bg-accent"
                   }`}
                 >
@@ -529,7 +532,7 @@ export default function MusicPlayer() {
               </div>
 
               <div className="flex items-center gap-2">
-                <button onClick={toggleMute} className="border rounded px-2 py-1 hover:bg-accent">
+                <button onClick={toggleMute} className="border rounded-2xl px-2 py-1 hover:bg-accent">
                   {isMuted || volume === 0 ? "Mute" : "Unmute"}
                 </button>
                 <Slider
@@ -551,7 +554,7 @@ export default function MusicPlayer() {
         </div>
 
         {currentPlaylist && (
-          <div className="space-y-2 border rounded p-4">
+          <div className="space-y-2 border rounded-2xl p-4">
             <h3 className="text-sm">Playing from</h3>
             <div>
               <p className="font-medium">{currentPlaylist.name}</p>
@@ -563,285 +566,304 @@ export default function MusicPlayer() {
     </div>
   </div>
   <audio ref={audioRef} />
-</div>    
-    // <div className="min-h-screen bg-background">
-    //   <div className="container mx-auto p-4 max-w-6xl">
-    //     {/* Header */}
-    //     <div className="flex items-center justify-between mb-6">
-    //       <div className="flex items-center gap-2">
-    //         <h1 className="text-3xl font-bold">Music Player</h1>
-    //       </div>
-    //       <div className="flex items-center gap-2">
-    //         <input
-    //           ref={fileInputRef}
-    //           type="file"
-    //           accept="audio/*"
-    //           multiple
-    //           onChange={handleFileUpload}
-    //           className="hidden"
-    //         />
-    //       </div>
-    //     </div>
+</div>
 
-    //     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    //       {/* Main Content */}
-    //       <div className="lg:col-span-2 space-y-6">
-    //         {/* Search and Filters */}
-    //         <div className="flex flex-col sm:flex-row gap-4">
-    //           <div className="relative flex-1">
-    //             <input
-    //               placeholder="Search tracks..."
-    //               value={searchQuery}
-    //               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
-    //               className="pl-10 border rounded p-2 w-full"
-    //             />
-    //           </div>
-    //           <Select value={genreFilter} onValueChange={setGenreFilter}>
-    //             <SelectTrigger className="w-full sm:w-48">
-    //               <SelectValue placeholder="Filter by genre" />
-    //             </SelectTrigger>
-    //             <SelectContent>
-    //               <SelectItem value="all">All Genres</SelectItem>
-    //               {genres.map((genre) => (
-    //                 <SelectItem key={genre} value={genre}>
-    //                   {genre}
-    //                 </SelectItem>
-    //               ))}
-    //             </SelectContent>
-    //           </Select>
-    //         </div>
 
-    //         {/* Tabs for Library and Playlists */}
-    //         <Tabs defaultValue="library" className="w-full">
-    //           <TabsList className="grid w-full grid-cols-2">
-    //             <TabsTrigger value="library">Music Library</TabsTrigger>
-    //             <TabsTrigger value="playlists">Playlists</TabsTrigger>
-    //           </TabsList>
 
-    //           <TabsContent value="library" className="space-y-4">
-    //             <div className="space-y-2">
-    //               {filteredTracks.map((track) => (
-    //                 <div
-    //                   key={track.id}
-    //                   className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer hover:bg-accent transition-colors ${
-    //                     currentTrack?.id === track.id ? "bg-accent border-primary" : ""
-    //                   }`}
-    //                   onClick={() => playTrack(track)}
-    //                 >
-    //                   <div className="flex items-center gap-3">
-    //                     <button
-    //                       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-    //                         e.stopPropagation()
-    //                         playTrack(track)
-    //                       }}
-    //                     >
-    //                       {currentTrack?.id === track.id && isPlaying ? (
-    //                         <Pause className="h-4 w-4" />
-    //                       ) : (
-    //                         <Play className="h-4 w-4" />
-    //                       )}
-    //                     </button>
-    //                     <div>
-    //                       <p className="font-medium">{track.title}</p>
-    //                       <p className="text-sm text-muted-foreground">{track.artist}</p>
-    //                     </div>
-    //                   </div>
-    //                   <div className="flex items-center gap-2">
-    //                     <span className="text-sm text-muted-foreground">{formatTime(track.duration)}</span>
-    //                   </div>
-    //                 </div>
-    //               ))}
-    //               {filteredTracks.length === 0 && (
-    //                 <div className="text-center py-8 text-muted-foreground">
-    //                   {tracks.length === 0 ? "No music uploaded yet" : "No tracks match your search"}
-    //                 </div>
-    //               )}
-    //             </div>
-    //           </TabsContent>
 
-    //           <TabsContent value="playlists" className="space-y-4">
-    //             <div className="flex justify-between items-center">
-    //               <h3 className="text-lg font-semibold">Your Playlists</h3>
-    //               <Dialog open={showCreatePlaylist} onOpenChange={setShowCreatePlaylist}>
-    //                 <DialogTrigger asChild>
-    //                   <button className="border rounded px-3 py-1">Create Playlist</button>
-    //                 </DialogTrigger>
-    //                 <DialogContent>
-    //                   <DialogHeader>
-    //                     <DialogTitle>Create New Playlist</DialogTitle>
-    //                   </DialogHeader>
-    //                   <div className="space-y-4">
-    //                     <div>
-    //                       <label htmlFor="playlist-name">Playlist Name</label>
-    //                       <input
-    //                         id="playlist-name"
-    //                         value={newPlaylistName}
-    //                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewPlaylistName(e.target.value)}
-    //                         placeholder="Enter playlist name"
-    //                         className="border rounded p-2 w-full"
-    //                       />
-    //                     </div>
-    //                     <div>
-    //                       <label htmlFor="playlist-description">Description (optional)</label>
-    //                       <Textarea
-    //                         id="playlist-description"
-    //                         value={newPlaylistDescription}
-    //                         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewPlaylistDescription(e.target.value)}
-    //                         placeholder="Enter playlist description"
-    //                       />
-    //                     </div>
-    //                     <button onClick={createPlaylist} className="w-full border rounded px-3 py-1">Create Playlist</button>
-    //                   </div>
-    //                 </DialogContent>
-    //               </Dialog>
-    //             </div>
 
-    //             <div className="grid gap-4">
-    //               {playlists.map((playlist) => (
-    //                 <div key={playlist.id} className="border rounded p-3">
-    //                   <div className="flex justify-between items-start">
-    //                     <div>
-    //                       <h3 className="text-lg">{playlist.name}</h3>
-    //                       {playlist.description && (
-    //                         <p className="text-sm text-muted-foreground mt-1">{playlist.description}</p>
-    //                       )}
-    //                       <p className="text-sm text-muted-foreground mt-1">{playlist.tracks.length} tracks</p>
-    //                     </div>
-    //                     <div className="flex gap-2">
-    //                       <button className="border rounded px-2 py-1" onClick={() => setCurrentPlaylist(playlist)}>
-    //                         Play
-    //                       </button>
-    //                       <button className="border rounded px-2 py-1" onClick={() => deletePlaylist(playlist.id)}>
-    //                         Delete
-    //                       </button>
-    //                     </div>
-    //                   </div>
-    //                   <div className="space-y-2">
-    //                     {playlist.tracks.map((trackId) => {
-    //                       const track = tracks.find((t) => t.id === trackId)
-    //                       if (!track) return null
-    //                       return (
-    //                         <div key={trackId} className="flex items-center justify-between p-2 rounded border">
-    //                           <div className="flex items-center gap-2">
-    //                             <button className="border rounded px-2 py-1" onClick={() => playTrack(track)}>
-    //                               <Play className="h-3 w-3" />
-    //                             </button>
-    //                             <div>
-    //                               <p className="text-sm font-medium">{track.title}</p>
-    //                               <p className="text-xs text-muted-foreground">{track.artist}</p>
-    //                             </div>
-    //                           </div>
-    //                           <button
-    //                             className="border rounded px-2 py-1"
-    //                             onClick={() => removeFromPlaylist(playlist.id, trackId)}
-    //                           >
-    //                             Delete
-    //                           </button>
-    //                         </div>
-    //                       )
-    //                     })}
-    //                   </div>
-    //                 </div>
-    //               ))}
-    //             </div>
-    //           </TabsContent>
-    //         </Tabs>
-    //       </div>
+// {/* <div className="min-h-screen bg-background text-foreground">
+//   <div className="container mx-auto p-4 max-w-6xl">
+//     {/* Header */}
+//     <div className="flex items-center justify-between mb-6 border-b pb-4">
+//       <h1 className="text-3xl font-bold text-primary">Music Player</h1>
+//       <div className="flex items-center gap-2">
+//         <input
+//           ref={fileInputRef}
+//           type="file"
+//           accept="audio/*"
+//           multiple
+//           onChange={handleFileUpload}
+//           className="hidden"
+//         />
+//       </div>
+//     </div>
 
-    //       {/* Player Sidebar */}
-    //       <div className="space-y-6">
-    //         {/* Now Playing */}
-    //         <div className="space-y-4">
-    //           {currentTrack ? (
-    //             <>
-    //               <div className="text-center">
-    //                 <div className="w-32 h-32 mx-auto bg-gradient-to-br from-primary/20 to-primary/40 rounded-lg flex items-center justify-center mb-4">
-    //                   <Play className="h-16 w-16 text-primary" />
-    //                 </div>
-    //                 <h3 className="font-semibold">{currentTrack.title}</h3>
-    //                 <p className="text-sm text-muted-foreground">{currentTrack.artist}</p>
-    //                 <span className="text-sm text-muted-foreground">{currentTrack.genre}</span>
-    //               </div>
+//     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+//       {/* Main Content */}
+//       <div className="lg:col-span-2 space-y-6">
+//         {/* Search and Filters */}
+//         <div className="flex flex-col sm:flex-row gap-4">
+//           <div className="relative flex-1">
+//             <input
+//               placeholder="Search tracks..."
+//               value={searchQuery}
+//               onChange={(e) => setSearchQuery(e.target.value)}
+//               className="pl-4 pr-2 py-2 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-primary"
+//             />
+//           </div>
+//           <Select value={genreFilter} onValueChange={setGenreFilter}>
+//             <SelectTrigger className="w-full sm:w-48 border rounded-lg">
+//               <SelectValue placeholder="Filter by genre" />
+//             </SelectTrigger>
+//             <SelectContent className="border rounded-md shadow-md">
+//               <SelectItem value="all">All Genres</SelectItem>
+//               {genres.map((genre) => (
+//                 <SelectItem key={genre} value={genre}>
+//                   {genre}
+//                 </SelectItem>
+//               ))}
+//             </SelectContent>
+//           </Select>
+//         </div>
 
-    //               {/* Progress Bar */}
-    //               <div className="space-y-2">
-    //                 <Slider
-    //                   value={[currentTime]}
-    //                   max={duration || 100}
-    //                   step={1}
-    //                   onValueChange={handleSeek}
-    //                   className="w-full"
-    //                 />
-    //                 <div className="flex justify-between text-xs text-muted-foreground">
-    //                   <span>{formatTime(currentTime)}</span>
-    //                   <span>{formatTime(duration)}</span>
-    //                 </div>
-    //               </div>
+//         {/* Tabs for Library and Playlists */}
+//         <Tabs defaultValue="library" className="w-full">
+//           <TabsList className="grid w-full grid-cols-2 border rounded-lg overflow-hidden">
+//             <TabsTrigger
+//               value="library"
+//               className="py-2 hover:bg-accent transition-all"
+//             >
+//               Music Library
+//             </TabsTrigger>
+//             <TabsTrigger
+//               value="playlists"
+//               className="py-2 hover:bg-accent transition-all"
+//             >
+//               Playlists
+//             </TabsTrigger>
+//           </TabsList>
 
-    //               {/* Controls */}
-    //               <div className="flex items-center justify-center gap-2">
-    //                 <button
-    //                   onClick={() => setIsShuffled(!isShuffled)}
-    //                   className={isShuffled ? "bg-primary text-primary-foreground border rounded px-2 py-1" : "border rounded px-2 py-1"}
-    //                 >
-    //                   Shuffle
-    //                 </button>
-    //                 <button onClick={handlePrevious} className="border rounded px-2 py-1">
-    //                   Prev
-    //                 </button>
-    //                 <button onClick={handlePlayPause} className="border rounded px-2 py-1">
-    //                   {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
-    //                 </button>
-    //                 <button onClick={handleNext} className="border rounded px-2 py-1">
-    //                   <SkipForward className="h-4 w-4" />
-    //                 </button>
-    //                 <button
-    //                   onClick={() => setIsRepeating(!isRepeating)}
-    //                   className={isRepeating ? "bg-primary text-primary-foreground border rounded px-2 py-1" : "border rounded px-2 py-1"}
-    //                 >
-    //                   Repeat
-    //                 </button>
-    //               </div>
+//           <TabsContent value="library" className="space-y-4">
+//             <div className="space-y-2">
+//               {filteredTracks.map((track) => (
+//                 <div
+//                   key={track.id}
+//                   className={`flex items-center justify-between p-4 rounded-lg border hover:shadow-md transition-all cursor-pointer ${
+//                     currentTrack?.id === track.id ? "bg-accent border-primary" : "bg-card"
+//                   }`}
+//                   onClick={() => playTrack(track)}
+//                 >
+//                   <div className="flex items-center gap-3">
+//                     <button
+//                       onClick={(e) => {
+//                         e.stopPropagation();
+//                         playTrack(track);
+//                       }}
+//                     >
+//                       {currentTrack?.id === track.id && isPlaying ? (
+//                         <Pause className="h-4 w-4" />
+//                       ) : (
+//                         <Play className="h-4 w-4" />
+//                       )}
+//                     </button>
+//                     <div>
+//                       <p className="font-medium text-lg">{track.title}</p>
+//                       <p className="text-sm text-muted-foreground">{track.artist}</p>
+//                     </div>
+//                   </div>
+//                   <span className="text-sm text-muted-foreground">
+//                     {formatTime(track.duration)}
+//                   </span>
+//                 </div>
+//               ))}
+//               {filteredTracks.length === 0 && (
+//                 <div className="text-center py-8 text-muted-foreground">
+//                   {tracks.length === 0 ? "No music uploaded yet" : "No tracks match your search"}
+//                 </div>
+//               )}
+//             </div>
+//           </TabsContent>
 
-    //               {/* Volume Control */}
-    //               <div className="flex items-center gap-2">
-    //                 <button onClick={toggleMute} className="border rounded px-2 py-1">
-    //                   {isMuted || volume === 0 ? "Mute" : "Unmute"}
-    //                 </button>
-    //                 <Slider
-    //                   value={[isMuted ? 0 : volume]}
-    //                   max={1}
-    //                   step={0.1}
-    //                   onValueChange={handleVolumeChange}
-    //                   className="flex-1"
-    //                 />
-    //               </div>
-    //             </>
-    //           ) : (
-    //             <div className="text-center py-8 text-muted-foreground">
-    //               <Play className="h-16 w-16 mx-auto mb-4 opacity-50" />
-    //               <p>No track selected</p>
-    //               <p className="text-sm">Choose a song to start playing</p>
-    //             </div>
-    //           )}
-    //         </div>
+//           <TabsContent value="playlists" className="space-y-4">
+//             <div className="flex justify-between items-center border-b pb-2">
+//               <h3 className="text-lg font-semibold">Your Playlists</h3>
+//               <Dialog open={showCreatePlaylist} onOpenChange={setShowCreatePlaylist}>
+//                 <DialogTrigger asChild>
+//                   <button className="border rounded px-3 py-1 hover:bg-accent transition-all">Create Playlist</button>
+//                 </DialogTrigger>
+//                 <DialogContent className="rounded-xl shadow-xl">
+//                   <DialogHeader>
+//                     <DialogTitle>Create New Playlist</DialogTitle>
+//                   </DialogHeader>
+//                   <div className="space-y-4">
+//                     <div>
+//                       <label htmlFor="playlist-name">Playlist Name</label>
+//                       <input
+//                         id="playlist-name"
+//                         value={newPlaylistName}
+//                         onChange={(e) => setNewPlaylistName(e.target.value)}
+//                         placeholder="Enter playlist name"
+//                         className="border rounded p-2 w-full"
+//                       />
+//                     </div>
+//                     <div>
+//                       <label htmlFor="playlist-description">Description (optional)</label>
+//                       <Textarea
+//                         id="playlist-description"
+//                         value={newPlaylistDescription}
+//                         onChange={(e) => setNewPlaylistDescription(e.target.value)}
+//                         placeholder="Enter playlist description"
+//                       />
+//                     </div>
+//                     <button onClick={createPlaylist} className="w-full border rounded px-3 py-1 hover:bg-accent">
+//                       Create Playlist
+//                     </button>
+//                   </div>
+//                 </DialogContent>
+//               </Dialog>
+//             </div>
 
-    //         {/* Current Playlist Info */}
-    //         {currentPlaylist && (
-    //           <div className="space-y-2">
-    //             <h3 className="text-sm">Playing from</h3>
-    //             <div>
-    //               <p className="font-medium">{currentPlaylist.name}</p>
-    //               <p className="text-sm text-muted-foreground">{currentPlaylist.tracks.length} tracks</p>
-    //             </div>
-    //           </div>
-    //         )}
-    //       </div>
-    //     </div>
-    //   </div>
+//             <div className="grid gap-4">
+//               {playlists.map((playlist) => (
+//                 <div key={playlist.id} className="border rounded p-4 hover:shadow-md">
+//                   <div className="flex justify-between items-start">
+//                     <div>
+//                       <h3 className="text-lg font-semibold">{playlist.name}</h3>
+//                       {playlist.description && (
+//                         <p className="text-sm text-muted-foreground mt-1">{playlist.description}</p>
+//                       )}
+//                       <p className="text-sm text-muted-foreground mt-1">{playlist.tracks.length} tracks</p>
+//                     </div>
+//                     <div className="flex gap-2">
+//                       <button className="border rounded px-2 py-1 hover:bg-accent" onClick={() => setCurrentPlaylist(playlist)}>
+//                         Play
+//                       </button>
+//                       <button className="border rounded px-2 py-1 hover:bg-destructive/10" onClick={() => deletePlaylist(playlist.id)}>
+//                         Delete
+//                       </button>
+//                     </div>
+//                   </div>
 
-    //   {/* Hidden Audio Element */}
-    //   <audio ref={audioRef} />
-    // </div>
+//                   <div className="space-y-2 mt-2">
+//                     {playlist.tracks.map((trackId) => {
+//                       const track = tracks.find((t) => t.id === trackId);
+//                       if (!track) return null;
+//                       return (
+//                         <div key={trackId} className="flex items-center justify-between p-2 rounded border">
+//                           <div className="flex items-center gap-2">
+//                             <button className="border rounded px-2 py-1 hover:bg-accent" onClick={() => playTrack(track)}>
+//                               <Play className="h-3 w-3" />
+//                             </button>
+//                             <div>
+//                               <p className="text-sm font-medium">{track.title}</p>
+//                               <p className="text-xs text-muted-foreground">{track.artist}</p>
+//                             </div>
+//                           </div>
+//                           <button className="border rounded px-2 py-1 hover:bg-destructive/10" onClick={() => removeFromPlaylist(playlist.id, trackId)}>
+//                             Delete
+//                           </button>
+//                         </div>
+//                       );
+//                     })}
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+//           </TabsContent>
+//         </Tabs>
+//       </div>
+
+//       {/* Player Sidebar */}
+//       <div className="space-y-6">
+//         {/* Now Playing */}
+//         <div className="space-y-4 border rounded p-4">
+//           {currentTrack ? (
+//             <>
+//               <div className="text-center">
+//                 <div className="w-32 h-32 mx-auto bg-gradient-to-br from-primary/20 to-primary/40 rounded-lg flex items-center justify-center mb-4">
+//                   <Play className="h-16 w-16 text-primary" />
+//                 </div>
+//                 <h3 className="font-semibold text-lg">{currentTrack.title}</h3>
+//                 <p className="text-sm text-muted-foreground">{currentTrack.artist}</p>
+//                 <span className="text-sm text-muted-foreground">{currentTrack.genre}</span>
+//               </div>
+
+//               <div className="space-y-2">
+//                 <Slider
+//                   value={[currentTime]}
+//                   max={duration || 100}
+//                   step={1}
+//                   onValueChange={handleSeek}
+//                   className="w-full"
+//                 />
+//                 <div className="flex justify-between text-xs text-muted-foreground">
+//                   <span>{formatTime(currentTime)}</span>
+//                   <span>{formatTime(duration)}</span>
+//                 </div>
+//               </div>
+
+//               <div className="flex items-center justify-center gap-2">
+//                 <button
+//                   onClick={() => setIsShuffled(!isShuffled)}
+//                   className={`border rounded px-2 py-1 ${
+//                     isShuffled ? "bg-primary text-white" : "hover:bg-accent"
+//                   }`}
+//                 >
+//                   Shuffle
+//                 </button>
+//                 <button onClick={handlePrevious} className="border rounded px-2 py-1 hover:bg-accent">
+//                   Prev
+//                 </button>
+//                 <button onClick={handlePlayPause} className="border rounded px-2 py-1 hover:bg-accent">
+//                   {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+//                 </button>
+//                 <button onClick={handleNext} className="border rounded px-2 py-1 hover:bg-accent">
+//                   <SkipForward className="h-4 w-4" />
+//                 </button>
+//                 <button
+//                   onClick={() => setIsRepeating(!isRepeating)}
+//                   className={`border rounded px-2 py-1 ${
+//                     isRepeating ? "bg-primary text-white" : "hover:bg-accent"
+//                   }`}
+//                 >
+//                   Repeat
+//                 </button>
+//               </div>
+
+//               <div className="flex items-center gap-2">
+//                 <button onClick={toggleMute} className="border rounded px-2 py-1 hover:bg-accent">
+//                   {isMuted || volume === 0 ? "Mute" : "Unmute"}
+//                 </button>
+//                 <Slider
+//                   value={[isMuted ? 0 : volume]}
+//                   max={1}
+//                   step={0.1}
+//                   onValueChange={handleVolumeChange}
+//                   className="flex-1"
+//                 />
+//               </div>
+//             </>
+//           ) : (
+//             <div className="text-center py-8 text-muted-foreground">
+//               <Play className="h-16 w-16 mx-auto mb-4 opacity-50" />
+//               <p>No track selected</p>
+//               <p className="text-sm">Choose a song to start playing</p>
+//             </div>
+//           )}
+//         </div>
+
+//         {currentPlaylist && (
+//           <div className="space-y-2 border rounded p-4">
+//             <h3 className="text-sm">Playing from</h3>
+//             <div>
+//               <p className="font-medium">{currentPlaylist.name}</p>
+//               <p className="text-sm text-muted-foreground">{currentPlaylist.tracks.length} tracks</p>
+//             </div>
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   </div>
+//   <audio ref={audioRef} />
+// </div>  */}
+
+
+
+
+
+
+
+
   )
 }
