@@ -118,7 +118,7 @@ export default function MusicPlayer() {
             url,
             file,
           }
-
+        
           setTracks((prev) => [...prev, newTrack])
         })
       }
