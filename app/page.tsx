@@ -335,6 +335,13 @@ export default function MusicPlayer() {
     }
   }
 
+  // Function to delete multiple tracks at once
+  const deleteMultipleTracks = (trackIds: string[]) => {
+    trackIds.forEach(trackId => {
+      deleteTrack(trackId)
+    })
+  }
+
   const createPlaylist = () => {
     if (!newPlaylistName.trim()) return
 
@@ -847,66 +854,78 @@ export default function MusicPlayer() {
               <p className="text-sm text-zinc-400">{track.artist}</p>
             </div>
           </div>
-          <div
-            className="flex items-center gap-2"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <span className="text-sm text-zinc-400 mr-1">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-zinc-400">
               {formatTime(track.duration)}
             </span>
             <button
-              className="p-1.5 rounded-xl bg-zinc-900/50 border border-zinc-700 hover:bg-zinc-700 transition"
-              onClick={() =>
-                setOpenMenuTrackId((prev) =>
-                  prev === track.id ? null : track.id
-                )
-              }
-              aria-label="Track actions"
+              className="p-2 rounded-xl bg-zinc-900/60 border border-zinc-700 hover:bg-zinc-700 group"
+              onClick={(e) => {
+                e.stopPropagation()
+                setOpenMenuTrackId((prev) => (prev === track.id ? null : track.id))
+              }}
+              title="Add to playlist"
             >
-              <MoreVertical className="h-4 w-4 text-white" />
+              <svg className="h-4 w-4 text-white group-hover:text-emerald-400 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
             </button>
-
             {openMenuTrackId === track.id && (
-              <div className="absolute right-3 top-14 z-20 w-56 rounded-xl border border-zinc-700 bg-zinc-900/90 backdrop-blur-xl shadow-xl ring-1 ring-white/10 p-3 space-y-3">
+              <div
+                className="absolute right-3 top-12 z-20 w-64 rounded-xl p-4 space-y-3 border border-white/10 bg-zinc-900/95 backdrop-blur-md shadow-2xl ring-1 ring-white/10"
+                data-track-menu
+                data-track-id={track.id}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="text-sm font-medium text-white mb-2">Add to playlist</div>
                 {playlists.length > 0 ? (
-                  <div>
-                    <div className="text-xs text-zinc-300/80 px-2 pb-1">
-                      Add to playlist
-                    </div>
-                    <Select
-                      onValueChange={(playlistId) => {
-                        addToPlaylist(playlistId, track.id)
-                        setOpenMenuTrackId(null)
-                      }}
-                    >
-                      <SelectTrigger className="h-9 px-3 py-1.5 border border-zinc-700 rounded-xl text-xs bg-zinc-800 text-white hover:bg-zinc-700">
-                        <SelectValue placeholder="Choose playlist" />
-                      </SelectTrigger>
-                      <SelectContent className="border border-zinc-700 rounded-xl shadow-lg max-h-56 overflow-auto bg-zinc-900">
-                        {playlists
-                          .filter((p) => !p.tracks.includes(track.id))
-                          .map((p) => (
-                            <SelectItem key={p.id} value={p.id}>
-                              {p.name}
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
+                  <div className="space-y-2 max-h-48 overflow-auto">
+                    {playlists
+                      .filter((p) => !p.tracks.includes(track.id))
+                      .map((p) => (
+                        <button
+                          key={p.id}
+                          onClick={() => {
+                            addToPlaylist(p.id, track.id)
+                            setOpenMenuTrackId(null)
+                          }}
+                          className="w-full text-left p-2 rounded-lg bg-zinc-800/60 border border-zinc-700 hover:bg-zinc-700/80 transition-all duration-200 text-white text-sm"
+                        >
+                          <div className="font-medium">{p.name}</div>
+                          <div className="text-xs text-zinc-400">{p.tracks.length} tracks</div>
+                        </button>
+                      ))}
+                    {playlists.filter((p) => !p.tracks.includes(track.id)).length === 0 && (
+                      <div className="text-sm text-zinc-400 px-2 py-1">All playlists already contain this track</div>
+                    )}
                   </div>
                 ) : (
-                  <div className="text-xs text-zinc-400 px-2">
-                    No playlists yet
-                  </div>
+                  <div className="text-sm text-zinc-400 px-2 py-1">No playlists yet</div>
                 )}
-                <div className="h-px bg-zinc-700/50" />
+                <div className="h-px bg-white/10 my-2" />
                 <button
-                  className="w-full text-left rounded-xl px-3 py-2 text-xs text-red-400 border border-red-400/20 hover:bg-red-500/10"
-                  onClick={() => deleteTrack(track.id)}
+                  onClick={() => {
+                    setShowCreatePlaylist(true)
+                    setOpenMenuTrackId(null)
+                  }}
+                  className="w-full text-left p-2 rounded-lg bg-emerald-600/20 border border-emerald-500/30 hover:bg-emerald-600/30 transition-all duration-200 text-emerald-300 text-sm font-medium"
                 >
-                  Delete track
+                  + Create new playlist
                 </button>
               </div>
             )}
+            <button
+              className="p-2 rounded-xl bg-zinc-900/60 border border-zinc-700 hover:bg-zinc-700 group"
+              onClick={(e) => {
+                e.stopPropagation()
+                deleteTrack(track.id)
+              }}
+              title="Delete track"
+            >
+              <svg className="h-4 w-4 text-white group-hover:text-red-400 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </button>
           </div>
         </div>
       ))}
@@ -916,6 +935,8 @@ export default function MusicPlayer() {
           {tracks.length === 0 ? "No music uploaded yet" : "No tracks match your search"}
         </div>
       )}
+      
+
     </div>
   </TabsContent>
 
@@ -1010,10 +1031,10 @@ export default function MusicPlayer() {
                 >
                   <div className="flex items-center gap-2">
                     <button
-                      className="p-1.5 rounded-xl bg-zinc-800 border border-zinc-700 hover:bg-zinc-700"
+                      className="p-2 rounded-xl bg-zinc-900/60 border border-zinc-700 hover:bg-zinc-700"
                       onClick={() => playTrack(track)}
                     >
-                      <Play className="h-3 w-3 text-white" />
+                      <Play className="h-4 w-4 text-white" />
                     </button>
                     <div>
                       <p className="text-sm font-medium text-white">{track.title}</p>
@@ -1021,10 +1042,13 @@ export default function MusicPlayer() {
                     </div>
                   </div>
                   <button
-                    className="px-2 py-1 rounded-xl border border-red-500 text-red-400 hover:bg-red-500/10 transition"
+                    className="p-2 rounded-xl bg-zinc-900/60 border border-zinc-700 hover:bg-zinc-700 group"
                     onClick={() => removeFromPlaylist(playlist.id, trackId)}
+                    title="Remove from playlist"
                   >
-                    Delete
+                    <svg className="h-4 w-4 text-white group-hover:text-red-400 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
                   </button>
                 </div>
               )
