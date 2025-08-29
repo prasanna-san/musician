@@ -1170,7 +1170,7 @@ export default function MusicPlayer() {
             max={duration || 100}
             step={1}
             onValueChange={handleSeek}
-            className="w-full [&>*]:h-2 [&>*]:bg-zinc-700 [&>div]:bg-primary"
+            className="w-full"
           />
           <div className="flex justify-between text-xs text-zinc-400">
             <span>{formatTime(currentTime)}</span>
@@ -1235,7 +1235,7 @@ export default function MusicPlayer() {
             max={1}
             step={0.1}
             onValueChange={handleVolumeChange}
-            className="flex-1 [&>*]:h-2 [&>*]:bg-zinc-700 [&>div]:bg-primary"
+            className="flex-1"
           />
         </div>
       </>
